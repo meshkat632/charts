@@ -45,8 +45,8 @@ jobs:
       # Step 3: Configure Git
       - name: Configure Git
         run: |
-          git config user.name "meshkat632@gmail.com"
-          git config user.email "meshkat632@gmail.com"
+          git config user.name "meshkatul@ververica.com"
+          git config user.email "meshkatul@ververica.com"
       # Step 4: Commit and push changes to the `releases` branch
       - name: Commit and push changes
         env:
