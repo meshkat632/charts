@@ -6,8 +6,35 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-artifacts:
     runs-on: ubuntu-latest
+    outputs:
+      artifact-path: ${{ steps.upload-artifacts.outputs.artifact-path }}
+
+    steps:
+      # Step 1: Check out the main branch
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+
+      # Step 2: Run Helm package command
+      - name: Build artifacts
+        run: |
+          mkdir -p ./dist
+          helm package ./chart -d ./dist
+
+      # Step 3: Upload artifacts
+      - name: Upload artifacts
+        id: upload-artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-artifacts
+          path: ./dist
+
+  commit-artifacts:
+    runs-on: ubuntu-latest
+    needs: build-artifacts
 
     steps:
       # Step 1: Check out the repository
@@ -22,13 +49,11 @@ jobs:
           git fetch origin releases || echo "No releases branch exists yet."
           git checkout -B releases origin/releases || git checkout --orphan releases
 
-      # Step 3: Update the `index.html` file
-      - name: Update index.html
-        run: |
-          mkdir -p ./dist
-          echo "$(date)" > ./dist/index.html
-          echo "hello, world!" >> ./dist/index.html
-          cp -R ./dist/* .
+      # Step 3: Download artifacts
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-artifacts
 
       # Step 4: Configure Git
       - name: Configure Git
@@ -41,6 +66,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
         run: |
+          cp -R dist/* .
           git add .
-          git commit -m "Update index.html with the latest release"
+          git commit -m "Add artifacts built from main branch"
           git push https://x-access-token:${{ secrets.RELEASE_GITHUB_TOKEN }}@github.com/${{ github.repository }} releases --force
