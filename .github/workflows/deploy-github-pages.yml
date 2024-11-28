@@ -19,10 +19,11 @@ jobs:
         run: |
           mkdir -p ./dist
           echo "$(date)" > ./dist/index.html
+          echo "hello, world!"
 
       # Step 5: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-          publish_dir: ./dist
+      #- name: Deploy to GitHub Pages
+      #  uses: peaceiris/actions-gh-pages@v3
+      #  with:
+      #    github_token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+      #    publish_dir: ./dist
