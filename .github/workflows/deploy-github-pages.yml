@@ -8,8 +8,6 @@ on:
 jobs:
   build-artifacts:
     runs-on: ubuntu-latest
-    outputs:
-      artifact-path: ${{ steps.upload-artifacts.outputs.artifact-path }}
 
     steps:
       # Step 1: Check out the main branch
@@ -23,50 +21,3 @@ jobs:
         run: |
           mkdir -p ./dist
           helm package ./chart -d ./dist
-
-      # Step 3: Upload artifacts
-      - name: Upload artifacts
-        id: upload-artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist-artifacts
-          path: ./dist
-
-  commit-artifacts:
-    runs-on: ubuntu-latest
-    needs: build-artifacts
-
-    steps:
-      # Step 1: Check out the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-
-      # Step 2: Switch to the `releases` branch
-      - name: Checkout releases branch
-        run: |
-          git fetch origin releases || echo "No releases branch exists yet."
-          git checkout -B releases origin/releases || git checkout --orphan releases
-
-      # Step 3: Download artifacts
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist-artifacts
-
-      # Step 4: Configure Git
-      - name: Configure Git
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-
-      # Step 5: Commit and push changes to the `releases` branch
-      - name: Commit and push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-        run: |
-          cp -R dist/* .
-          git add .
-          git commit -m "Add artifacts built from main branch"
-          git push https://x-access-token:${{ secrets.RELEASE_GITHUB_TOKEN }}@github.com/${{ github.repository }} releases --force
