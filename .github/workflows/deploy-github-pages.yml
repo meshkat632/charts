@@ -17,11 +17,12 @@ jobs:
       # Step 4: Build the static site (if applicable)
       - name: Build static site
         run: |
-          echo "$(Date)" >> ./releases/index.html
+          mkdir -p ./dist
+          echo "$(date)" > ./dist/index.html
 
       # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist # Replace 'dist' with the directory containing your static HTML files
+          publish_dir: ./dist
