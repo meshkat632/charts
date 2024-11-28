@@ -42,6 +42,11 @@ jobs:
           echo "hello, world!" >> ./dist/index.html
           cp -R ./dist/* .
 
+      # Step 3: Configure Git
+      - name: Configure Git
+        run: |
+          git config user.name "meshkat632@gmail.com"
+          git config user.email "meshkat632@gmail.com"
       # Step 4: Commit and push changes to the `releases` branch
       - name: Commit and push changes
         env:
