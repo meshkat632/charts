@@ -58,6 +58,8 @@ jobs:
 
       - name: Print Git info
         run: |
+          git config --global user.email "meshkat632@gmail.com"
+          git config --global user.name "Meshkatul Anwer"
           echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Commit SHA: $(git rev-parse --short HEAD)"
           git status
