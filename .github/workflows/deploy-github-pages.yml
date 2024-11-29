@@ -21,3 +21,9 @@ jobs:
         run: |
           make package-all
           make update-index
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-artifacts
+          path: ./releases
