@@ -20,6 +20,14 @@ jobs:
         run: |
           echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Commit SHA: $(git rev-parse --short HEAD)"
+          git log -1 --pretty=%B > .commit-message.txt
+          echo "Last commit message written to .commit-message.txt"
+          # Get last committer's name
+          git log -1 --pretty=%cn > .commit-username.txt
+          echo "Last commit username written to .commit-username.txt"
+          # Get last committer's email
+          git log -1 --pretty=%ce > .commit-email.txt
+          echo "Last commit email written to .commit-email.txt"
       # Step 2: Run Helm package command
       - name: Build artifacts
         run: |
@@ -59,11 +67,13 @@ jobs:
 
       - name: Print Git info
         run: |
+          commit-message=$(cat .commit-message.txt)
+          echo "Commit Message: $commit-message"
           git config --global user.email "meshkat632@gmail.com"
           git config --global user.name "Meshkatul Anwer"
           echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Commit SHA: $(git rev-parse --short HEAD)"
           git status
           git add .
-          git commit -m "Update Helm chart index.yaml"
+          git commit -m "$(cat .commit-message.txt)"
           git push
