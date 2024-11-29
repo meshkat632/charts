@@ -8,6 +8,12 @@ on:
 jobs:
   build-artifacts:
     runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.set-output.outputs.branch_name }}
+      commit_sha: ${{ steps.set-output.outputs.commit_sha }}
+      commit_message: ${{ steps.set-output.outputs.commit_message }}
+      commit_user: ${{ steps.set-output.outputs.commit_user }}
+      commit_user_email: ${{ steps.set-output.outputs.commit_user_email }}
 
     steps:
       # Step 1: Check out the main branch
@@ -17,20 +23,13 @@ jobs:
 #          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
 
       - name: Print Git info
+        id: set-output
         run: |
-          echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
-          echo "Commit SHA: $(git rev-parse --short HEAD)"
-          echo "Commit Message: $(git log -1 --pretty=%B)"
-          echo "Commit user: $(git log -1 --pretty=%cn)"
-          echo "Commit user-email: $(git log -1 --pretty=%ce)"
-          git log -1 --pretty=%B > .commit-message.txt
-          echo "Last commit message written to .commit-message.txt"
-          # Get last committer's name
-          git log -1 --pretty=%cn > .commit-username.txt
-          echo "Last commit username written to .commit-username.txt"
-          # Get last committer's email
-          git log -1 --pretty=%ce > .commit-email.txt
-          echo "Last commit email written to .commit-email.txt"
+            echo "branch_name=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+            echo "commit_sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+            echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+            echo "commit_user=$(git log -1 --pretty=%cn)" >> $GITHUB_ENV
+            echo "commit_user_email=$(git log -1 --pretty=%ce)" >> $GITHUB_ENV
       # Step 2: Run Helm package command
       - name: Build artifacts
         run: |
@@ -70,13 +69,19 @@ jobs:
 
       - name: Print Git info
         run: |
-          commit-message=$(cat .commit-message.txt)
-          echo "Commit Message: $commit-message"
+          echo "#########################################################################"
+          echo "Branch Name: ${{ env.branch_name }}"
+          echo "Commit SHA: ${{ env.commit_sha }}"
+          echo "Commit Message: ${{ env.commit_message }}"
+          echo "Commit User: ${{ env.commit_user }}"
+          echo "Commit User Email: ${{ env.commit_user_email }}"
+          echo "#########################################################################"
+          
           git config --global user.email "meshkat632@gmail.com"
           git config --global user.name "Meshkatul Anwer"
           echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Commit SHA: $(git rev-parse --short HEAD)"
           git status
           git add .
-          git commit -m "$(cat .commit-message.txt)"
+          git commit -m "make helm releases"
           git push
