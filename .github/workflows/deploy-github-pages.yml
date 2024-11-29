@@ -53,8 +53,7 @@ jobs:
       # Step 3: Run Helm repo index command
       - name: Publish Helm chart
         run: |
-          ls -ltr 
-          cat index.yaml
+          ls -ltr
           helm repo index . --url https://github.com/meshkat632/helm-charts --merge index.yaml
           echo "#########################################################################"
           cat index.yaml
