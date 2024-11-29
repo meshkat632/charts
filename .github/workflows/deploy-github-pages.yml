@@ -44,3 +44,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-artifacts
+
+      # Step 3: Run Helm repo index command
+      - name: Publish Helm chart
+        run: |
+          ls -ltr
+          cat releases/index.yaml
