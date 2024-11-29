@@ -19,5 +19,5 @@ jobs:
       # Step 2: Run Helm package command
       - name: Build artifacts
         run: |
-          mkdir -p ./dist
-          helm package ./chart -d ./dist
+          make package-all
+          make update-index
