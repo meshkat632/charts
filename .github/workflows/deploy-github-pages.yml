@@ -55,6 +55,7 @@ jobs:
         run: |
           ls -ltr 
           cat index.yaml
+          cat new-index.yaml
 
       - name: Print Git info
         run: |

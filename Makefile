@@ -35,6 +35,7 @@ package-all: create-output-dir
 update-index: create-output-dir
 	@echo "Updating index.yaml with REPO_URL=$(REPO_URL)"
 	helm repo index $(OUTPUT_DIR) --url $(REPO_URL)
+	@mv $(OUTPUT_DIR)/index.yaml $(OUTPUT_DIR)/new-index.yaml
 
 # Clean the output directory
 .PHONY: clean
