@@ -48,7 +48,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-artifacts
-          path: ./local-artifacts
+          path: ./
 
       # Step 3: Run Helm repo index command
       - name: Publish Helm chart
