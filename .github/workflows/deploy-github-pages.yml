@@ -16,6 +16,10 @@ jobs:
 #        with:
 #          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
 
+      - name: Print Git info
+        run: |
+          echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Commit SHA: $(git rev-parse --short HEAD)"
       # Step 2: Run Helm package command
       - name: Build artifacts
         run: |
@@ -50,3 +54,9 @@ jobs:
         run: |
           ls -ltr
           cat releases/index.yaml
+
+      - name: Print Git info
+        run: |
+          echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Commit SHA: $(git rev-parse --short HEAD)"
+          git status
