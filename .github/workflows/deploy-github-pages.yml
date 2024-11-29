@@ -53,8 +53,8 @@ jobs:
       # Step 3: Run Helm repo index command
       - name: Publish Helm chart
         run: |
-          ls -ltr ./local-artifacts
-          cat ./local-artifacts/index.yaml
+          ls -ltr 
+          cat index.yaml
 
       - name: Print Git info
         run: |
