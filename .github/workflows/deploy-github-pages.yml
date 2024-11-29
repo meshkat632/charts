@@ -48,12 +48,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-artifacts
+          path: ./local-artifacts
 
       # Step 3: Run Helm repo index command
       - name: Publish Helm chart
         run: |
-          ls -ltr
-          cat releases/index.yaml
+          ls -ltr ./local-artifacts
+          cat ./local-artifacts/index.yaml
 
       - name: Print Git info
         run: |
