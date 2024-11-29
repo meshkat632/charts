@@ -29,10 +29,18 @@ jobs:
           path: ./releases
 
   publish:
+    needs: build-artifacts
     runs-on: ubuntu-latest
     steps:
       # Step 1: Check out the release branch
       - name: Checkout main branch
         uses: actions/checkout@v3
-#        with:
-#          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        with:
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+          branch: releases
+
+      # Step 2: Download artifacts from the previous step
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-artifacts
