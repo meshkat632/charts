@@ -1,2 +1,1 @@
-# charts
-a collection of helm-charts
+# I am the releases

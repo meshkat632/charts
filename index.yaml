@@ -1,0 +1,24 @@
+apiVersion: v1
+entries:
+  apple-be:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-11-29T14:49:40.533370372Z"
+    description: A Helm chart for Kubernetes
+    digest: 165ac9772a1128d3d1460ea79a4c903095383ce7e83eeb95537ffddd427b81e3
+    name: apple-be
+    type: application
+    urls:
+    - https://github.com/meshkat632/helm-charts/apple-be-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-11-29T14:49:40.53132607Z"
+    description: A Helm chart for Kubernetes
+    digest: 499181b1b8b668918eff9490b3547b45210d10e965f42e1585b44a47c38e0b5e
+    name: apple-be
+    type: application
+    urls:
+    - https://github.com/meshkat632/helm-charts/apple-be-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-11-29T14:49:40.530538848Z"
