@@ -9,7 +9,6 @@ jobs:
   build-artifacts:
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.set-output.outputs.commit_message }}
       branch_name: ${{ steps.set-output.outputs.branch_name }}
       commit_sha: ${{ steps.set-output.outputs.commit_sha }}
       commit_message: ${{ steps.set-output.outputs.commit_message }}
@@ -77,18 +76,17 @@ jobs:
       - name: Print Git info
         run: |
           echo "#########################################################################"
-          echo "Branch Name: ${{ needs.build-artifacts.outputs.image }}"
-          echo "Commit SHA: ${{ env.commit_sha }}"
-          echo "Commit Message: ${{ env.commit_message }}"
-          echo "Commit User: ${{ env.commit_user }}"
-          echo "Commit User Email: ${{ env.commit_user_email }}"
+          echo "Commit SHA: ${{ needs.build-artifacts.outputs.commit_sha }}"
+          echo "Commit Message: ${{ needs.build-artifacts.outputs.commit_message }}"
+          echo "Commit User: ${{ needs.build-artifacts.outputs.commit_user }}"
+          echo "Commit User Email: ${{ needs.build-artifacts.outputs.commit_user_email }}"
           echo "#########################################################################"
           
-          git config --global user.email "meshkat632@gmail.com"
-          git config --global user.name "Meshkatul Anwer"
+          git config --global user.email "${{ needs.build-artifacts.outputs.commit_user_email }}"
+          git config --global user.name "${{ needs.build-artifacts.outputs.commit_user }}"
           echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Commit SHA: $(git rev-parse --short HEAD)"
           git status
           git add .
-          git commit -m "make helm releases"
+          git commit -m "[${{ needs.build-artifacts.outputs.commit_sha }}] message:${{ needs.build-artifacts.outputs.commit_message }}"
           git push
