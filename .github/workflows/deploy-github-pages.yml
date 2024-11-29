@@ -16,6 +16,12 @@ jobs:
       commit_user_email: ${{ steps.set-output.outputs.commit_user_email }}
 
     steps:
+      - name: Store build timestamp
+        run: echo "BUILD_TIME=$(date +'%T')" >> $GITHUB_ENV
+
+      - name: Deploy using stored timestamp
+        run: echo "Deploying at $BUILD_TIME"
+
       # Step 1: Check out the main branch
       - name: Checkout main branch
         uses: actions/checkout@v4
@@ -25,11 +31,11 @@ jobs:
       - name: Print Git info
         id: set-output
         run: |
-            echo "branch_name=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
-            echo "commit_sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-            echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
-            echo "commit_user=$(git log -1 --pretty=%cn)" >> $GITHUB_ENV
-            echo "commit_user_email=$(git log -1 --pretty=%ce)" >> $GITHUB_ENV
+            echo "branch_name=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_OUTPUT
+            echo "commit_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+            echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+            echo "commit_user=$(git log -1 --pretty=%cn)" >> $GITHUB_OUTPUT
+            echo "commit_user_email=$(git log -1 --pretty=%ce)" >> $GITHUB_OUTPUT
       # Step 2: Run Helm package command
       - name: Build artifacts
         run: |
