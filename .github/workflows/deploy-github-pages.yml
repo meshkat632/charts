@@ -9,6 +9,7 @@ jobs:
   build-artifacts:
     runs-on: ubuntu-latest
     outputs:
+      image: ${{ steps.set-output.outputs.commit_message }}
       branch_name: ${{ steps.set-output.outputs.branch_name }}
       commit_sha: ${{ steps.set-output.outputs.commit_sha }}
       commit_message: ${{ steps.set-output.outputs.commit_message }}
@@ -76,7 +77,7 @@ jobs:
       - name: Print Git info
         run: |
           echo "#########################################################################"
-          echo "Branch Name: ${{ env.branch_name }}"
+          echo "Branch Name: ${{ needs.build-artifacts.outputs.image }}"
           echo "Commit SHA: ${{ env.commit_sha }}"
           echo "Commit Message: ${{ env.commit_message }}"
           echo "Commit User: ${{ env.commit_user }}"
