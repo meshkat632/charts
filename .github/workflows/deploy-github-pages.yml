@@ -61,3 +61,6 @@ jobs:
           echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Commit SHA: $(git rev-parse --short HEAD)"
           git status
+          git add .
+          git commit -m "Update Helm chart index.yaml"
+          git push
