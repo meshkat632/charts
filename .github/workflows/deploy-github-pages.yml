@@ -55,7 +55,7 @@ jobs:
         run: |
           ls -ltr 
           cat index.yaml
-          cat new-index.yaml
+          helm repo index $(OUTPUT_DIR) --url $(REPO_URL) --merge index.yaml
 
       - name: Print Git info
         run: |
