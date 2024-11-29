@@ -13,8 +13,8 @@ jobs:
       # Step 1: Check out the main branch
       - name: Checkout main branch
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+#        with:
+#          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
 
       # Step 2: Run Helm package command
       - name: Build artifacts
@@ -27,3 +27,12 @@ jobs:
         with:
           name: dist-artifacts
           path: ./releases
+
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the release branch
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+#        with:
+#          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}
