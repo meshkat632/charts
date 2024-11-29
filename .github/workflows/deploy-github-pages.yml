@@ -55,7 +55,9 @@ jobs:
         run: |
           ls -ltr 
           cat index.yaml
-          helm repo index $(OUTPUT_DIR) --url $(REPO_URL) --merge index.yaml
+          helm repo index . --url https://github.com/meshkat632/helm-charts --merge index.yaml
+          echo "#########################################################################"
+          cat index.yaml
 
       - name: Print Git info
         run: |
