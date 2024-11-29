@@ -20,6 +20,9 @@ jobs:
         run: |
           echo "Branch Name: $(git rev-parse --abbrev-ref HEAD)"
           echo "Commit SHA: $(git rev-parse --short HEAD)"
+          echo "Commit Message: $(git log -1 --pretty=%B)"
+          echo "Commit user: $(git log -1 --pretty=%cn)"
+          echo "Commit user-email: $(git log -1 --pretty=%ce)"
           git log -1 --pretty=%B > .commit-message.txt
           echo "Last commit message written to .commit-message.txt"
           # Get last committer's name
